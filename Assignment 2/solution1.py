@@ -111,7 +111,8 @@ char_dict = init_dictionary(words)
 # print(char_dict)
 # print("----------------------------")
 print("result", mapped_word_letter_pos(words, char_dict, 'a', 1))
-print("Evaluate ------------------------------------")
+print("\n")
+print("3. Evaluate ------------------------------------")
 nr_tests = 10000000
 
 start = time.time()
