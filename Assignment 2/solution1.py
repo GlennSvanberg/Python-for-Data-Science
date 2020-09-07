@@ -1,3 +1,4 @@
+import time
 """
 Looking for a word in a dictionary is very easy since words are sorted alphabetically. But what if we are looking for all the words in the second letter is a, 
 it's impossible unless you sort all the words by their second letter. In this case, you would need a different dictionary for each letter position. 
@@ -59,19 +60,19 @@ This way nothing has to be looped over neither the words, the letters or the pos
 
 print("\n2. More efficient solution ---------------------")
 
-char_dict = {}
-
 
 def init_dictionary(words):
+    char_dict = {}
     for word_index, word in enumerate(words):
         for char_index, char in enumerate(word):
-            if not index_in_char_dict(char_index):
-                add_index_to_char_dict(char_index)
+            if not index_in_char_dict(char_index, char_dict):
+                add_index_to_char_dict(char_index, char_dict)
 
             if not char_in_index(char, char_dict[char_index]):
                 add_char_in_index(char, char_dict[char_index])
 
             add_word_index_to_char(char_dict[char_index][char], word_index)
+    return char_dict
 
 
 def add_word_index_to_char(char, word_index):
@@ -88,15 +89,41 @@ def char_in_index(char, index_dict):
     return False
 
 
-def add_index_to_char_dict(i):
+def add_index_to_char_dict(i, char_dict):
     char_dict[i] = {}
 
 
-def index_in_char_dict(i):
+def index_in_char_dict(i, char_dict):
     if i in char_dict:
         return True
     return False
 
 
-init_dictionary(words)
-print(char_dict)
+def mapped_word_letter_pos(words, char_dict, char, pos):
+    try:
+        return [words[i] for i in char_dict[pos][char]]
+
+    except:
+        return False
+
+
+char_dict = init_dictionary(words)
+# print(char_dict)
+# print("----------------------------")
+print("result", mapped_word_letter_pos(words, char_dict, 'a', 1))
+print("Evaluate ------------------------------------")
+nr_tests = 10000000
+
+start = time.time()
+print("test 1")
+for i in range(nr_tests):
+    words_letter_position(words, 'a', 1)
+end = time.time()
+print(end-start)
+
+print("test 2")
+start = time.time()
+for i in range(nr_tests):
+    mapped_word_letter_pos(words, char_dict, 'a', 1)
+end = time.time()
+print(end-start)
