@@ -63,7 +63,7 @@ print("\n2. More efficient solution ---------------------")
 
 def init_dictionary(words):
     char_dict = {}
-    for word_index, word in enumerate(words):
+    for word in words:
         for char_index, char in enumerate(word):
             if not index_in_char_dict(char_index, char_dict):
                 add_index_to_char_dict(char_index, char_dict)
@@ -71,12 +71,9 @@ def init_dictionary(words):
             if not char_in_index(char, char_dict[char_index]):
                 add_char_in_index(char, char_dict[char_index])
 
-            add_word_index_to_char(char_dict[char_index][char], word_index)
+            char_dict[char_index][char].append(word)
+
     return char_dict
-
-
-def add_word_index_to_char(char, word_index):
-    char.append(word_index)
 
 
 def add_char_in_index(char, index_dict):
@@ -99,21 +96,19 @@ def index_in_char_dict(i, char_dict):
     return False
 
 
-def mapped_word_letter_pos(words, char_dict, char, pos):
+def mapped_word_letter_pos(char_dict, char, pos):
     try:
-        return [words[i] for i in char_dict[pos][char]]
-
+        return char_dict[pos][char]
     except:
         return False
 
 
 char_dict = init_dictionary(words)
-# print(char_dict)
-# print("----------------------------")
-print("result", mapped_word_letter_pos(words, char_dict, 'a', 1))
+
+print("result", mapped_word_letter_pos(char_dict, 'a', 1))
 print("\n")
 print("3. Evaluate ------------------------------------")
-nr_tests = 10000000
+nr_tests = 1000000
 
 start = time.time()
 print("test 1")
@@ -125,6 +120,6 @@ print(end-start)
 print("test 2")
 start = time.time()
 for i in range(nr_tests):
-    mapped_word_letter_pos(words, char_dict, 'a', 1)
+    mapped_word_letter_pos(char_dict, 'a', 1)
 end = time.time()
 print(end-start)
