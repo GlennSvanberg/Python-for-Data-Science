@@ -24,6 +24,7 @@ for row in f:
     words.append(row.strip().lower())
 words = words[0:2000]
 # print(words[411859])
+f.close()
 
 
 def map_anagrams():
