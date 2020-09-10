@@ -1,125 +1,140 @@
 import time
-"""
-Looking for a word in a dictionary is very easy since words are sorted alphabetically. But what if we are looking for all the words in the second letter is a, 
-it's impossible unless you sort all the words by their second letter. In this case, you would need a different dictionary for each letter position. 
-The objective of this exercise is to design a kind of dictionary that will allow you to find all the words with a given letter in a given position.
 
-Example
-
-words = ['class', 'case', 'course', 'dictionary', 'java', 'list', 'program', 'python', 'tuple', 'word']
-
-w = words_letter_position(d, 'a', 1)
-
-print ("result=",w)
-
-output: result= ['case', 'java']
-
- w = words_letter_position(d, 't', 3)
-
-print ("result=",w)
-
-output: result=['dictionary', 'list']
-
-1- Write the simplest solution that allow you to find all the words with a given letter in a given position.
-
-2- Write a more efficient solution by using a different data structure? Explain your choice.
-
-3- Compare the execution time between these two solutions. 
-"""
+# Simple slow solution
 
 
 def words_letter_position(words, char, pos):
+    """
+    Matches words to certain positions in a word and returns them as a list
+
+    Args:
+    words: list of words
+    char: one char that will be matched to a certain position in the word
+    pos: int representing the position in the word the char should match to.
+
+    Returns:
+    list of words
+    """
     matches = []
     for word in words:
-        if word[pos] == char:
-            matches.append(word)
+        try:
+            if word[pos] == char:
+                matches.append(word)
+        except IndexError:
+            pass
+
     return matches
 
-
-words = ['class', 'case', 'course', 'dictionary',
-         'java', 'list', 'program', 'python', 'tuple', 'word']
-
-print("\n1. Simple solution -----------------------------")
-print("result", words_letter_position(words, 'a', 1))
-
-"""
-dict letter : (key: pos, value: word_pos) requires to loop over all of the same letter
-
-dict char_index: (key: letter, value:word_list_pos)
-
-I'm using a dictionary nested inside another dictionary. 
-The outer dictionary has the position in the word that the lerrer is searched for. 
-The value of the outer dict is another dictionary with single letters as keys. 
-The value for the letters is a list of positions in the original word list. 
-
-This way nothing has to be looped over neither the words, the letters or the positions. Finding the values directly using a mapping is much more efficient
-
- chars{ key: char_index }
-                   (name is the char_index key ){key: char, value: char_position_in_word }  
-"""
-
-print("\n2. More efficient solution ---------------------")
+# More elaborate faster solution
 
 
 def init_dictionary(words):
+    """
+    Takes a list of words and returns them as a nested dictionary.
+    The outer dictionary stores the chars as keys.
+    The value is another dictionary with positions of the chars in the words as keys.
+    The values of the inner dictionary is a list of words matching the outer keys.
+
+    Args:
+    words: list of words
+
+    Returns:
+    dictionary of chars with dictionary of positions with words as values
+    """
     char_dict = {}
     for word in words:
         for char_index, char in enumerate(word):
-            if not index_in_char_dict(char_index, char_dict):
-                add_index_to_char_dict(char_index, char_dict)
+            if not char_index in char_dict:
+                char_dict[char_index] = {}
 
-            if not char_in_index(char, char_dict[char_index]):
-                add_char_in_index(char, char_dict[char_index])
+            if not char in char_dict[char_index]:
+                char_dict[char_index][char] = []
 
             char_dict[char_index][char].append(word)
 
     return char_dict
 
 
-def add_char_in_index(char, index_dict):
-    index_dict[char] = []
+def dict_word_letter_pos(char_dict, char, pos):
+    """
+    Finds a char in a given position from a dictionary given these as elements
+
+    Args:
+    char_dict: Nested dictionary with all the words sorted under chars and positions
+    char: the that is to match the given position
+    pos: the position the char is to be found at
+
+    Returns:
+    list of words matching the given args
+    """
+    return char_dict[pos][char]
 
 
-def char_in_index(char, index_dict):
-    if char in index_dict:
-        return True
-    return False
+def evaluate_solution(data, implementation, iterations):
+    start = time.time()
+    for i in range(iterations):
+        implementation(data, "a", 1)
+    end = time.time()
+    return end-start
 
 
-def add_index_to_char_dict(i, char_dict):
-    char_dict[i] = {}
+def evaluate_dict_init(data):
+    print("initializing char_dict")
+    start = time.time()
+    char_dict = init_dictionary(data)
+    end = time.time()
+    print("elapsed: ", end-start, " sec")
+    return char_dict
 
 
-def index_in_char_dict(i, char_dict):
-    if i in char_dict:
-        return True
-    return False
+# data structures
+words = ['class', 'case', 'course', 'dictionary',
+         'java', 'list', 'program', 'python', 'tuple', 'word']
+char_dict = evaluate_dict_init(words)
 
 
-def mapped_word_letter_pos(char_dict, char, pos):
-    try:
-        return char_dict[pos][char]
-    except:
-        return False
+# test the solutions
+#print("\n1. Simple solution -----------------------------")
+#print("result", words_letter_position(words, 'a', 1))
+#print("\n2. More efficient solution ---------------------")
+#print("result", mapped_word_letter_pos(char_dict, 'a', 1))
 
 
-char_dict = init_dictionary(words)
+# Evaluate the performance of each solution by running both of them 10000000 times
+char_dict = evaluate_dict_init(words)
+iterations = 1000000
+print("3. Evaluate with {} iterations ------------------------------------".format(iterations))
+iterations = 1000000
+print("Test 3.1: simple solution")
+test_one = evaluate_solution(words, words_letter_position, iterations)
+print("elapsed ", test_one, " sec")
 
-print("result", mapped_word_letter_pos(char_dict, 'a', 1))
-print("\n")
-print("3. Evaluate ------------------------------------")
-nr_tests = 1000000
 
-start = time.time()
-print("test 1")
-for i in range(nr_tests):
-    words_letter_position(words, 'a', 1)
-end = time.time()
-print(end-start)
+print("Test 3.2: dict solution")
+test_two = evaluate_solution(char_dict, dict_word_letter_pos, iterations)
+print("elapsed ", test_two, " sec")
 
-print("test 2")
-start = time.time()
-for i in range(nr_tests):
-    mapped_word_letter_pos(char_dict, 'a', 1)
-end = time.time()
-print(end-start)
+"""
+The dict solution takes a bit more time to initialize but as long as it is ininilized it is a lot faster than the simple solution
+This test was performed a lot of times on a small list. Below is the same test but with all the words from words.txt instead.
+"""
+
+# Evaluate the performance of each solution by running both of them at a larger dataset
+
+iterations = 1000
+print("4. Evaluate with big file and {} iterations -------------------------------".format(iterations))
+words = []
+f = open("words.txt", "r")
+for row in f:
+    words.append(row.strip().lower())
+f.close()
+char_dict = evaluate_dict_init(words)
+
+print("Test 4.1: simple solution")
+test_one = evaluate_solution(words, words_letter_position, iterations)
+print("elapsed ", test_one, " sec")
+
+
+print("Test 4.2: dict solution")
+test_two = evaluate_solution(char_dict, dict_word_letter_pos, iterations)
+print("elapsed ", test_two, " sec")
