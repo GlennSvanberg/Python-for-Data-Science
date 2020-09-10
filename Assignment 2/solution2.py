@@ -1,90 +1,107 @@
-"""
-An anagram is a word formed by rearranging the letters of a different word by using all the original letters exactly once.
-For example, the word bawl can be rearranged into 'blaw' or the word 'alerts' into 'salter'.
+def get_words():
+    """
+    Reads a file, 'words.txt' and returns a list of all the lines in that file stipped and lowercased.
 
-1- Write a program that reads a word list from the file words.txt
-
-Preview the document and as an output, it prints all the lists of words that are anagrams ordered by the length of lists.
-all the lists of words that are anagrams and contains n letters which is given as an input.
-Example:
-
-For 6 letters, we will have for example:
-
-(2, ['append', 'napped'])
-
-(12, ['enters', 'ernest', 'estren', 'nester', 'renest', 'rentes',
- 'resent', 'sterne', 'streen', 'tenser', 'ternes', 'treens'])
-
-2- Which data structure did you use and why?
-"""
-f = open("words.txt", "r")
-words = []
-
-for row in f:
-    words.append(row.strip().lower())
-#words = words[0:50000]
-# print(words[411859])
-f.close()
+    Returns:
+    list of words
+    """
+    word_list = []
+    f = open("words.txt", "r")
+    for row in f:
+        word_list.append(row.strip().lower())
+    f.close()
+    return word_list
 
 
-def map_anagrams():
-    mappings = {}
+def map_anagrams(words):
+    """
+    Takes a list of words and puts all the words in a dictionary sorted by anagrams. 
+
+    Args:
+    words: list of words
+
+    Returns: 
+    dictionary of anagrams, sorted anagram as key and lists of anagrams as values
+    """
+    word_dict = {}
     for word in words:
-        s_word = "".join(sorted(word))
-        if mappings.get(s_word):
-            mappings[s_word].append(word)
-        else:
-            mappings[s_word] = [word]
+        sorted_word = "".join(sorted(word))
+
+        # add key to dict if it doesn't exist already
+        if not word_dict.get(sorted_word):
+            word_dict[sorted_word] = []
+
+        # add the word to the list in the anagram_list
+        word_dict[sorted_word].append(word)
+    return word_dict
+
+
+def sort_by_list_length(words):
+    """
+    Iterates through a list of words and put all the words in a dictionary, one dictionary for each anagram. 
+    Keyname in the dictionary is the words in a sorted order and values is all the anagrams matching the sorted word
+
+    Args:
+    words: a dictionary containing words grouped together as lists of anagrams.
+
+    Returns:
+    Dictionary containing lists of anagrams grouped together based on list length. Keyname is the length of the lists. 
+    """
     anagrams = {}
-    for m in mappings:
-        if len(mappings[m]) > 1:
-            anagrams[m] = mappings[m]
+    for key in words:
+        if len(words[key]) > 1:
+            list_length = len(words[key])
+            if not list_length in anagrams:
+                anagrams[list_length] = []
+            anagrams[list_length].append(words[key])
     return anagrams
 
 
-def add_to_dict(list_length_dict, word_list):
-    list_length = len(word_list)
-    if not list_length_dict.get(list_length):
-        list_length_dict[list_length] = {}
-
-    word_length_dict = list_length_dict[list_length]
-    word_length = len(word_list[0])
-
-    if not word_length_dict.get(word_length):
-        word_length_dict[word_length] = []
-
-    word_length_dict[word_length].append(word_list)
-
-
-def convert_to_nested_list(anagrams):
+def anagram_key_list(anagrams):
     """
-    anagrams is a dict
-    word, is a str each word
+    create a list with the sorted keys of the anagrams dict
+
+    Args:
+    anagrams: dictionary containing lists of words
+
+    Returns:
+    List of keys from the dictionary sorted biggest to smallest
     """
-    list_length_dict = {}
+    key_list = []
     for key in anagrams:
-        word_list = anagrams[key]
-        if len(word_list) > 1:
-            add_to_dict(list_length_dict, word_list)
-    return list_length_dict
+        key_list.append(key)
+    key_list.sort(reverse=True)
+    return key_list
 
 
-anagrams = map_anagrams()
+def print_anagrams(anagrams, key_list, word_length=0):
+    """
+    Prints anagrams as lists in descending order,
+    if word_length is other than 0 print only the specified word length
+
+    Args:
+    anagrams: dictionary of lists containing anagrams.
+    key_list: list containing the keys to the dictionary of anagrams
+    """
+    for key in key_list:
+        for anagram in anagrams[key]:
+            if word_length == 0:
+                print(anagram)
+            elif word_length == len(anagram[0]):
+                print(anagram)
 
 
-def print_sorted_anagrams():
-    pass
+# Control flow
+words = map_anagrams(get_words())
 
+anagrams = sort_by_list_length(words)
 
-print_sorted_anagrams()
+anagram_key_list = anagram_key_list(anagrams)
 
-
-word_dict = convert_to_nested_list(anagrams)
-
-for key in word_dict:
-    nested_dict = word_dict[key]
-    print("List_length: ", key)
-    if key == 6:
-        for nested_key in nested_dict:
-            print("Word_length: ", key)
-            print(nested_dict[nested_key])
+while True:
+    try:
+        word_length = int(
+            input("How long words do you want to see anagrams for? type zero to see all anagrams: "))
+        print_anagrams(anagrams, anagram_key_list, word_length)
+    except:
+        print("That is not a valid number")
