@@ -67,7 +67,10 @@ def dict_word_letter_pos(char_dict, char, pos):
     Returns:
     list of words matching the given args
     """
-    return char_dict[pos][char]
+    try:
+        return char_dict[pos][char]
+    except KeyError:
+        return["No word matches this pattern"]
 
 
 def evaluate_solution(data, implementation, iterations):
@@ -104,7 +107,6 @@ char_dict = evaluate_dict_init(words)
 char_dict = evaluate_dict_init(words)
 iterations = 1000000
 print("3. Evaluate with {} iterations ------------------------------------".format(iterations))
-iterations = 1000000
 print("Test 3.1: simple solution")
 test_one = evaluate_solution(words, words_letter_position, iterations)
 print("elapsed ", test_one, " sec")
