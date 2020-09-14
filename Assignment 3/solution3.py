@@ -6,27 +6,6 @@ it reverses the encoder process by transforming a compressed string to its full 
 
 Solve this problem by using generators and without using the groupby function.
 """
-from collections import namedtuple
-
-
-def encoder_list(data):
-    # Compress the string by replacing each consecutive sequence of the same letter by this letter and it's frequency
-    encoded = []
-    char_count = 1
-    prev_char = ""
-    for index, char in enumerate(data):
-        if char == prev_char:
-            char_count += 1
-        else:
-            if index != 0:
-                res = prev_char + str(char_count)
-                encoded.append(res)
-                char_count = 1
-            prev_char = char
-
-        if index == len(data) - 1:
-            encoded.append(prev_char + str(char_count))
-    return "".join(encoded)
 
 
 def encode_generator(data):
@@ -51,26 +30,39 @@ def encode_generator(data):
 def encoder(data):
     res = ""
     for x in encode_generator(data):
-        print(x)
         res = res + f"{x[0]}{x[1]}"
     return res
 
 
 def decoder_generator(data):
-    pass
+    is_letter = True
+    current_char = ""
+    nr = 0
+    for char in data:
+        if is_letter:
+            is_letter = False
+            current_char = char
+        else:
+            is_letter = True
+            nr = int(char)
+            seq = ""
+            for n in range(nr):
+                seq = seq + current_char
+            yield seq
 
 
 def decoder(data):
-    # reverse the compression
-    return data
+    res = ""
+    for x in decoder_generator(data):
+        res = res + x
+    return res
 
 
 data = "bbccccccdrrrffhhhh"
 print(data)
 
-
-print(encoder_list(data))
 encoded = encoder(data)
 print(encoded)
+
 decoded = decoder(encoded)
 print(decoded)
