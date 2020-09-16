@@ -55,7 +55,8 @@ while game_on:
     if playerA_card == None or playerB_card == None:
 
         game_on = False
-
+        print(
+            f'Player A has {playerA_score} points, Player B has {playerB_score}')
         if playerA_score > playerB_score:
             print("Winner: Player A")
         elif playerB_score > playerA_score:
