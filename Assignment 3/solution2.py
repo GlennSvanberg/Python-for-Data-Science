@@ -26,7 +26,7 @@ class Cone(Cylinder):
         super().__init__(radius, height)
 
     def volume(self):
-        return (1 / 3) * self.volume()
+        return (1 / 3) * super().volume()
 
 
 c = Circle(4)
