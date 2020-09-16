@@ -1,13 +1,3 @@
-"""
-The aim of this problem is to write an encoder and decoder for strings. 
-For the encoder, it compresses a string by replacing each consecutive sequence of the same letter by this letter and its 
-frequency (example: ”bbccccccdrrrffhhhh” will be ”b2c6d1r3f2h4”). For the decoder, 
-it reverses the encoder process by transforming a compressed string to its full representation.
-
-Solve this problem by using generators and without using the groupby function.
-"""
-
-
 def encode_generator(data):
     char_count = 1
     prev_char = ""
