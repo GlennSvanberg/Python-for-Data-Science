@@ -40,58 +40,40 @@ def findNonDuplicate(A):
     # and each character is duplicated except one which corresponds to the non-duplicate character in the list.
     # you need to find the non duplicate character
     # Your code below
-    print("----------------------------------")
-    print(A)
-    uniqueElement = ''
 
+    # only allow alpha
+    # How to do this without increasing complexity?
+
+    # empty list
+    if len(A) == 0:
+        return None
+
+    # no duplicate value
+    if len(A) == 2 and A[0] == A[1]:
+        return None
+
+    # Recursive case
     if len(A) > 2:
-        mid = math.ceil((len(A) / 2))
+        # mid = math.ceil((len(A) / 2))
+        mid = len(A) // 2
         if mid % 2 != 0:
             mid += 1
 
         right = A[mid:]
         left = A[:mid]
 
-        print("right", right)
-        print("left", left)
-
         if left[-1] == left[-2]:
-            print("going right")
             return findNonDuplicate(right)
         else:
-            print("going left")
             return findNonDuplicate(left)
-    else:
-        uniqueElement = A[0]
-        print("short found it", uniqueElement)
 
-        return uniqueElement
+    # Base case
+    return A[0]
 
 
-#test = ['c', 'c', 'd', 'd', 'f', 'f', 'z']
-#test = ['a', 'a', 'b', 'b', 'c', 'd', 'd', 'e', 'e', 'r', 'r']
-# print(findNonDuplicate(test))
-
-
-"""
-    if len(A) <= 1 or A[0] != A[1]:
-        return A[0]
-    return findNonDuplicate(A[2:])
-    """
-
-"""
-if __name__ == "__main__":
-    assert findNonDuplicate(
-        ['a', 'a', 'b', 'b', 'c']) == 'c'
-
-assert findNonDuplicate(['c', 'c', 'd', 'd', 'f', 'f', 'z']) == 'z'
-assert findNonDuplicate(
-    ['a', 'a', 'b', 'b', 'c', 'd', 'd', 'e', 'e', 'r', 'r']) == 'c'
-
-assert findNonDuplicate(
-    ['a', 'b', 'b', 'c', 'c', 'd', 'd', 'e', 'e', 'r', 'r']) == 'a'
-"""
 if __name__ == "__main__":
     assert findNonDuplicate(['c', 'c', 'd', 'd', 'f', 'f', 'z']) == 'z'
     assert findNonDuplicate(
         ['a', 'a', 'b', 'b', 'c', 'd', 'd', 'e', 'e', 'r', 'r']) == 'c'
+    assert findNonDuplicate(
+        ['a', 'a', 'b', 'b', 'd', 'd', 'e', 'e', 'r', 'r']) == None
