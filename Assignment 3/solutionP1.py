@@ -34,7 +34,7 @@ class CardGame():
         else:
             return None
 
-
+# setup the game with 2 players each having a shuffled deck
 game_on = True
 playerA = CardGame()
 playerB = CardGame()
@@ -47,11 +47,13 @@ playerB_score = 0
 
 print("Player A vs Player B:")
 
+# game loop each player draws a card for each loop
 while game_on:
 
     playerA_card = playerA.draw()
     playerB_card = playerB.draw()
 
+    # end game if any player is out of cards
     if playerA_card == None or playerB_card == None:
 
         game_on = False
@@ -64,6 +66,7 @@ while game_on:
         else:
             print("It's a draw")
 
+    # compare the players cards and give score to the player with the highest card
     else:
 
         if playerA_card[0] > playerB_card[0]:
