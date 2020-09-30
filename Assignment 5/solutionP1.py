@@ -15,9 +15,11 @@ class Queue():
     def __init__(self):
         self.head = None
         self.tail = None
+        self.nr_of_nodes = 0
 
     def enqueue(self, item):
         # Adding last in queue
+        self.nr_of_nodes += 1
         node = Node(item)
         last = self.tail
         if last == None:
@@ -29,23 +31,46 @@ class Queue():
 
     def dequeue(self):
         # take first element in queue
+
         node = self.head
         if node != None:
             self.head = node.get_next()
+            self.nr_of_nodes -= 1
             return node.get_item()
         else:
             self.head = None
             self.tail = None
             return None
 
+    def top(self):
+        return self.head.get_item()
+
+    def isEmpty(self):
+        return self.head == None
+
+    def size(self):
+        return self.nr_of_nodes
+
+    def __str__(self):
+        nodes = ""
+        node = self.head
+        while node != None:
+            nodes += str(node.get_item())
+            node = node.get_next()
+            if node != None:
+                nodes += ", "
+        return nodes
+
 
 class Stack():
     # Last in last out
     def __init__(self):
         self.head = None
+        self.nr_of_nodes = 0
 
     def push(self, item):
         node = Node(item)
+        self.nr_of_nodes += 1
         if self.head == None:
             self.head = node
         else:
@@ -57,8 +82,28 @@ class Stack():
         if self.head != None:
             self.head = self.head.get_next()
         if node != None:
+            self.nr_of_nodes -= 1
             return node.get_item()
         return None
+
+    def top(self):
+        return self.head.get_item()
+
+    def isEmpty(self):
+        return self.head == None
+
+    def size(self):
+        return self.nr_of_nodes
+
+    def __str__(self):
+        nodes = ""
+        node = self.head
+        while node != None:
+            nodes += str(node.get_item())
+            node = node.get_next()
+            if node != None:
+                nodes += ", "
+        return nodes
 
 
 class Node():
@@ -77,45 +122,55 @@ class Node():
 
 
 def test_queue():
-
+    print("Test Queue-----------------")
     q = Queue()
-    print("adding 1-4")
-    q.enqueue(1)
-    q.enqueue(2)
-    q.enqueue(3)
-    q.enqueue(4)
+    for i in range(1, 4):
+        print("Enque:", i)
+        q.enqueue(i)
 
-    print(q.dequeue())
-    print(q.dequeue())
-    print(q.dequeue())
-    print(q.dequeue())
-    print(q.dequeue())
-    print(q.dequeue())
+    print("Dequeue:", q)
+    print("Size:", q.size())
 
-    print("adding 5")
+    while not q.isEmpty():
+        print("Dequeue:", q.dequeue())
+
+    print("Dequeue when empty:", q.dequeue())
+    print("Queue:", q)
+    print("Size:", q.size())
+
+    print("Enque:", 5)
     q.enqueue(5)
+    print("Size:", q.size())
 
-    print(q.dequeue())
-    print(q.dequeue())
+    print("Top:", q.top())
 
 
 def test_stack():
+    print("Test Stack-----------------")
     s = Stack()
-    s.push(1)
-    s.push(2)
-    s.push(3)
-    print(s.pop())
-    print(s.pop())
-    print(s.pop())
-    print(s.pop())
-    print(s.pop())
-    s.push(4)
-    print(s.pop())
-    print(s.pop())
+    for i in range(1, 4):
+        print("Push:", i)
+        s.push(i)
+
+    print("Stack:", s)
+    print("Size:", s.size())
+
+    while not s.isEmpty():
+        print("Pop:", s.pop())
+
+    print("Pop when empty:", s.pop())
+    print("Stack:", s)
+    print("Size:", s.size())
+
+    print("Push:", 5)
+    s.push(5)
+    print("Size:", s.size())
+
+    print("Top:", s.top())
 
 
-# test_queue()
-# test_stack()
+test_queue()
+test_stack()
 
 """
 The stack and the queue with linked list is both very efficient solutions for specific applications. 

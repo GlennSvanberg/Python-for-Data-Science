@@ -1,70 +1,5 @@
 import re
-
-
-class Queue():
-    # First in first out
-    def __init__(self):
-        self.head = None
-        self.tail = None
-
-    def enqueue(self, item):
-        # Adding last in queue
-        node = Node(item)
-        last = self.tail
-        if last == None:
-            self.head = node
-            self.tail = node
-        else:
-            last.set_next(node)
-            self.tail = node
-
-    def dequeue(self):
-        # take first element in queue
-        node = self.head
-        if node != None:
-            self.head = node.get_next()
-            return node.get_item()
-        else:
-            self.head = None
-            self.tail = None
-            return None
-
-
-class Stack():
-    # Last in last out
-    def __init__(self):
-        self.head = None
-
-    def push(self, item):
-        node = Node(item)
-        if self.head == None:
-            self.head = node
-        else:
-            node.set_next(self.head)
-            self.head = node
-
-    def pop(self):
-        node = self.head
-        if self.head != None:
-            self.head = self.head.get_next()
-        if node != None:
-            return node.get_item()
-        return None
-
-
-class Node():
-    def __init__(self, item, next=None):
-        self.item = item
-        self.next = next
-
-    def get_item(self):
-        return self.item
-
-    def set_next(self, next):
-        self.next = next
-
-    def get_next(self):
-        return self.next
+from solutionP1 import Queue, Stack
 
 
 def check_palindrom(text):
@@ -79,6 +14,9 @@ def check_palindrom(text):
 
     first_half = text[:mid]
     second_half = text[mid:]
+
+    print("stack", first_half)
+    print("queue", second_half)
     # put first half in stack first to last
     stack = Stack()
     for char in first_half:
@@ -100,9 +38,17 @@ def check_palindrom(text):
     return True
 
 
-p = "Ni talar bra latin"
-p = "Able was I ere I saw Elba!"
-p = "A man, a plan, a canal – Panama"
-p = 123321
+def test():
+    cases = []
+    cases.append("Ni talar bra latin")
+    cases.append("Able was I ere I saw Elba!")
+    cases.append("A man, a plan, a canal – Panama")
+    cases.append(123321)
+    cases.append("Not a palindrom")
 
-print(check_palindrom(p))
+    for case in cases:
+        print(check_palindrom(case))
+        print("-------------------")
+
+
+test()
