@@ -37,6 +37,11 @@ class Node():
         return str(self.value)
 
 
+class Tree():
+    def __init__(self):
+        self.root = None
+
+
 class RandomTree():
     def __init__(self, numbers):
         self.root = None
@@ -73,8 +78,47 @@ class RandomTree():
 
 
 class BinarySearchTree():
-    def __init__(self):
+    def __init__(self, one, two):
         self.root = None
+
+        self.merge(one, two, self.root)
+        self.sort()
+
+    def sort(self):
+        print("Sorting")
+
+    def merge(self, one, two, node):
+
+        if one == None and two == None:
+            return None
+        if one == None:
+            one = Node(0)
+        if two == None:
+            two = Node(0)
+
+        node = Node(one.value + two.value)
+        if self.root == None:
+            self.root = node
+
+        node.left = self.merge(one.left, two.left, node.left)
+        node.right = self.merge(one.right, two.right, node.right)
+        return node
+
+    def set_node(self, tree_node, current_node):
+        if tree_node == None:
+            tree_node = current_node
+        else:
+            # decide left or right tree Equal goes left
+            if tree_node.value >= current_node.value:
+                if tree_node.left == None:
+                    tree_node.left = current_node
+                else:
+                    self.set_node(tree_node.left, current_node)
+            else:
+                if tree_node.right == None:
+                    tree_node.right = current_node
+                else:
+                    self.set_node(tree_node.right, current_node)
 
     def merge_trees(self, trees):
         for tree in trees:
@@ -84,26 +128,9 @@ class BinarySearchTree():
                 else:
                     self.set_node(self.root, Node(n))
 
-    def set_node(self, tree_node, current_node):
-        if tree_node == None:
-            tree_node = current_node
-        else:
-            if tree_node.value > current_node.value:
-                if tree_node.left == None:
-                    tree_node.left = current_node
-                else:
-                    self.set_node(tree_node.left, current_node)
-            elif tree_node.value < current_node.value:
-                if tree_node.right == None:
-                    tree_node.right = current_node
-                else:
-                    self.set_node(tree_node.right, current_node)
-            else:
-                print("Duplicated value", tree_node.value, current_node.value)
-
     def __str_level(self, node, level=0, left=True, s=""):
         if node != None:
-            s = s + self.__str_level(node.left, level + 1, True)
+            s = s + self.__str_level(node.right, level + 1, True)
             if level == 0:
                 parent = ""
             elif left:
@@ -111,7 +138,7 @@ class BinarySearchTree():
             else:
                 parent = "\\_"
             s += f"{' ' * 4 * level} {parent} {node.value} \n"
-            s += self.__str_level(node.right, level + 1, False)
+            s += self.__str_level(node.left, level + 1, False)
         return s
 
     def __str__(self):
@@ -132,23 +159,54 @@ def printTree(node, level=0, left=True):
         printTree(node.right, level + 1, False)
 
 
-one = [1, 2, 3, 4]
-random.shuffle(one)
-tree_one = RandomTree(one).root
-print("one-------------")
-printTree(tree_one)
+def test():
+
+    one = [1, 2, 3, 4]
+    random.shuffle(one)
+    tree_one = RandomTree(one).root
+    print("one-------------")
+    printTree(tree_one)
+
+    two = [4, 5, 6, 7, 8, 9]
+    random.shuffle(two)
+    tree_two = RandomTree(two).root
+    print("two-------------")
+    printTree(tree_two)
+
+    print("binary search tree--------")
+
+    tree = BinarySearchTree(tree_one, tree_two).root
+    # tree.merge_trees(trees)
+
+    print("test")
+    printTree(tree)
 
 
-two = [4, 5, 6, 7, 8, 9]
-random.shuffle(two)
-tree_two = RandomTree(two).root
-print("two-------------")
-printTree(tree_two)
+# test()
 
-print("binary search tree--------")
-trees = [two, one]
-tree = BinarySearchTree()
-tree.merge_trees(trees)
-printTree(tree.root)
-print("test")
-print(tree)
+
+def test2():
+
+    one = [1, 2, 3, 4]
+    random.shuffle(one)
+    tree_one = RandomTree(one)
+    print("one-------------")
+    print(tree_one)
+
+
+"""
+    two = [4, 5, 6, 7, 8, 9]
+    random.shuffle(two)
+    tree_two = RandomTree(two).root
+    print("two-------------")
+    printTree(tree_two)
+
+    print("binary search tree--------")
+
+    tree = BinarySearchTree(tree_one, tree_two).root
+    # tree.merge_trees(trees)
+
+    print("test")
+    printTree(tree)
+    """
+test2()

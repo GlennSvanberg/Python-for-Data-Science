@@ -169,8 +169,9 @@ def test_stack():
     print("Top:", s.top())
 
 
-test_queue()
-test_stack()
+if __name__ == "__main__":
+    test_queue()
+    test_stack()
 
 """
 The stack and the queue with linked list is both very efficient solutions for specific applications. 

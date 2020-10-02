@@ -15,8 +15,6 @@ def check_palindrom(text):
     first_half = text[:mid]
     second_half = text[mid:]
 
-    print("stack", first_half)
-    print("queue", second_half)
     # put first half in stack first to last
     stack = Stack()
     for char in first_half:
@@ -47,7 +45,11 @@ def test():
     cases.append("Not a palindrom")
 
     for case in cases:
-        print(check_palindrom(case))
+        print(case)
+        if check_palindrom(case):
+            print("Palindrom")
+        else:
+            print("NOT Palindrom")
         print("-------------------")
 
 
