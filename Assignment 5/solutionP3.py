@@ -44,6 +44,9 @@ class Node():
             return True
         return False
 
+    def inspect(self):
+        return f"value: {self.value}, parent:, {self.parent}, left: {self.left}, right: {self.right}"
+
     def __str__(self):
         return str(self.value)
 
@@ -138,30 +141,78 @@ class BinarySearchTree(Tree):
             self.__delete_one_child_node(node)
 
     def __delete_two_child_node(self, node):
+        print("doing stupid")
+        print("root:", self.root.inspect())
+        print("node:", node.inspect())
+
         traverse_node = node.right
 
         while traverse_node.left != None:
             traverse_node = traverse_node.left
 
         in_order_successor = traverse_node
+        print("in_order_successor", in_order_successor.inspect())
+
+        if self.root == node:
+            print("same")
+            node.parent = None
+            print("noooode", node.inspect())
+
+        # update childs parent value?
+
+        print("succesor", in_order_successor.inspect())
+        print("self")
+        print(self)
         node.value = in_order_successor.value
+        print("Nooooooode stored", node.inspect())
+        print("node right child", node.right.inspect())
         self.delete_node(in_order_successor)
 
     def __delete_one_child_node(self, node):
         # find lone child
+        print("deleting", node.inspect())
         if node.left != None:
             node_to_promote = node.left
         else:
             node_to_promote = node.right
+        print("node_to_promote", node_to_promote.inspect())
 
         # promote
         node_to_promote.parent = node.parent
-        if node.parent.left != None and node.parent.left.value == node.value:
+        print("node_to_promote", node_to_promote.inspect())
+        # promoting to root
+        if node == self.root:
+            node = node_to_promote
+            print("Promoting to root")
+            if node == node_to_promote:
+                print("Cant promote to self")
+                if self.root.left != None:
+                    print("left")
+                    print("root", self.root.inspect())
+                    node.left = self.root.left
+                else:
+                    print("right")
+                    node.right = self.root.right
+                self.root = node
+
+        # promoting from left
+        elif node.parent.left != None and node.parent.left.value == node.value:
             node.parent.left = node_to_promote
-            print("promoting to left")
+            if node.parent == None:
+                print("none")
+                self.root = node
+            node_to_promote.parent = node.parent
+            print("promoting from left")
+        # promoting from right
         else:
+            print(node)
             node.parent.right = node_to_promote
-            print("promoting too rightr")
+            node_to_promote.parent = node.parent
+            if node.parent == None:
+                print("none")
+                self.root = node
+            print("promoting from right")
+            print("parent", node.parent)
 
     def __delete_leaf_node(self, node):
         if node.parent == None:
@@ -272,14 +323,33 @@ def test_same_tree():
     print("binary search tree--------")
 
     tree = BinarySearchTree(tree_one.top(), tree_two.top())
-    print(tree)
+    # print(tree)
 
+    """
     print("delete")
     leaf_node = tree.root.left.left
     tree.delete_node(leaf_node)
+    """
     print(tree)
 
     nodes = tree.get_nodes()
+    print("delete")
+    tree.delete_node(tree.root)
+    print("----------------")
+    tree.delete_node(tree.root)
+    print("----------------")
+    tree.delete_node(tree.root)
+    print("----------------")
+
+    print(tree)
+    print("----------------")
+    print(tree.root.inspect())
+
+    """
+    while not tree.root.is_leaf():
+        tree.delete_node(tree.root)
+        print("root", tree.root)
+    """
     """
     for node in nodes:
         print("val", node)
