@@ -32,9 +32,15 @@ class Node():
         self.value = value
         self.right = None
         self.left = None
+        self.parent = None
 
     def is_leaf(self):
         if self.right == None and self.left == None:
+            return True
+        return False
+
+    def has_two_children(self):
+        if self.right != None and self.left != None:
             return True
         return False
 
@@ -66,7 +72,7 @@ class Tree():
         return self.__str_level(self.root)
 
 
-class RandomTree(Tree):
+class BinaryTree(Tree):
     def __init__(self, numbers):
         super().__init__()
         self.order = True
@@ -120,15 +126,21 @@ class BinarySearchTree(Tree):
 
         if node.is_leaf():
             print("Node is leaf")
-            node = None
+            if node.parent == None:
+                print(
+                    "This is both a node and a leaf, thus it is the whole tree and can't be deleted")
+            else:
+                parent = node.parent
+                if parent.left != None and parent.left.value == node.value:
+                    parent.left = None
+                elif parent.right != None and parent.right.value == node.value:
+                    parent.right = None
 
         elif node.has_two_children():
             print("Node has 2 children")
 
         else:
             print("Node has one child")
-
-        #
 
     def get_values(self, node, values):
         if node != None:
@@ -140,21 +152,42 @@ class BinarySearchTree(Tree):
         if node.right != None:
             self.get_values(node.right, values)
 
-    def set_node(self, tree_node, current_node):
-        if tree_node == None:
-            tree_node = current_node
+    def get_nodes(self):
+        nodes = []
+        self._get_nodes(self.root, nodes)
+        return nodes
+
+    def _get_nodes(self, node, nodes):
+        if node != None:
+            nodes.append(node)
+        else:
+            return
+        if node.left != None:
+            self._get_nodes(node.left, nodes)
+        if node.right != None:
+            self._get_nodes(node.right, nodes)
+
+    def set_node(self, parent, current_node):
+        # if root set current as parent
+        if parent == None:
+            parent = current_node
         else:
             # decide left or right tree Equal goes left
-            if tree_node.value >= current_node.value:
-                if tree_node.left == None:
-                    tree_node.left = current_node
+            if parent.value >= current_node.value:
+
+                if parent.left == None:
+                    parent.left = current_node
+                    current_node.parent = parent
                 else:
-                    self.set_node(tree_node.left, current_node)
+                    current_node.parent = parent
+                    self.set_node(parent.left, current_node)
             else:
-                if tree_node.right == None:
-                    tree_node.right = current_node
+                if parent.right == None:
+                    parent.right = current_node
+                    current_node.parent = parent
                 else:
-                    self.set_node(tree_node.right, current_node)
+                    current_node.parent = parent
+                    self.set_node(parent.right, current_node)
 
     def merge(self, one, two, node):
 
@@ -177,12 +210,12 @@ class BinarySearchTree(Tree):
 def test_random_tree():
 
     one = random.sample(range(1, 15), 10)
-    tree_one = RandomTree(one)
+    tree_one = BinaryTree(one)
     print("one-------------")
     print(tree_one)
 
     two = random.sample(range(1, 15), 10)
-    tree_two = RandomTree(two)
+    tree_two = BinaryTree(two)
     print("two-------------")
     print(tree_two)
 
@@ -195,12 +228,12 @@ def test_random_tree():
 
 def test_same_tree():
     one = [5, 5, 5, 5, 1, 1]
-    tree_one = RandomTree(one)
+    tree_one = BinaryTree(one)
     print("one-------------")
     print(tree_one)
 
     two = [1, 3, 7, 8, 1, 1]
-    tree_two = RandomTree(two)
+    tree_two = BinaryTree(two)
     print("two-------------")
     print(tree_two)
 
@@ -210,9 +243,18 @@ def test_same_tree():
     print(tree)
 
     print("delete")
-    leaf_node = tree.root.right.right
+    leaf_node = tree.root.left.left
     tree.delete_node(leaf_node)
     print(tree)
+
+    nodes = tree.get_nodes()
+    """
+    for node in nodes:
+        print("val", node)
+        if node.parent != None:
+            print("parent", node.parent)
+
+    """
 
 
 test_same_tree()
