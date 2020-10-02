@@ -83,7 +83,6 @@ class BinaryTree(Tree):
                 self.set_node(self.root, Node(n))
 
     def set_node(self, tree_node, current_node):
-        # if random.choice([True, False]):
         # alternate left / right
         if self.order:
             if tree_node.right == None:
@@ -110,9 +109,10 @@ class BinarySearchTree(Tree):
         self.get_values(self.root, values)
 
         # set mid value as root to balance the tree
-        values.sort()
+
         mid = len(values)//2
-        mid_val = values.pop(mid)
+        mid_val = sorted(values).pop(mid)
+
         new_root = Node(mid_val)
 
         for val in values:
@@ -123,24 +123,56 @@ class BinarySearchTree(Tree):
         if node == None:
             return
         print("deleting", node.value)
-
+        print(self)
         if node.is_leaf():
             print("Node is leaf")
-            if node.parent == None:
-                print(
-                    "This is both a node and a leaf, thus it is the whole tree and can't be deleted")
-            else:
-                parent = node.parent
-                if parent.left != None and parent.left.value == node.value:
-                    parent.left = None
-                elif parent.right != None and parent.right.value == node.value:
-                    parent.right = None
+            self.__delete_leaf_node(node)
 
         elif node.has_two_children():
             print("Node has 2 children")
+            self.__delete_two_child_node(node)
+            # self.delete_node(in_order_successor)
 
         else:
             print("Node has one child")
+            self.__delete_one_child_node(node)
+
+    def __delete_two_child_node(self, node):
+        traverse_node = node.right
+
+        while traverse_node.left != None:
+            traverse_node = traverse_node.left
+
+        in_order_successor = traverse_node
+        node.value = in_order_successor.value
+        self.delete_node(in_order_successor)
+
+    def __delete_one_child_node(self, node):
+        # find lone child
+        if node.left != None:
+            node_to_promote = node.left
+        else:
+            node_to_promote = node.right
+
+        # promote
+        node_to_promote.parent = node.parent
+        if node.parent.left != None and node.parent.left.value == node.value:
+            node.parent.left = node_to_promote
+            print("promoting to left")
+        else:
+            node.parent.right = node_to_promote
+            print("promoting too rightr")
+
+    def __delete_leaf_node(self, node):
+        if node.parent == None:
+            print(
+                "This is both a node and a leaf, thus it is the whole tree and can't be deleted")
+        else:
+            parent = node.parent
+            if parent.left != None and parent.left.value == node.value:
+                parent.left = None
+            elif parent.right != None and parent.right.value == node.value:
+                parent.right = None
 
     def get_values(self, node, values):
         if node != None:
@@ -227,12 +259,12 @@ def test_random_tree():
 
 
 def test_same_tree():
-    one = [5, 5, 5, 5, 1, 1]
+    one = [5, 5, 5, 5, 1, 1, 3, 3, 2]
     tree_one = BinaryTree(one)
     print("one-------------")
     print(tree_one)
 
-    two = [1, 3, 7, 8, 1, 1]
+    two = [1, 3, 7, 8, 1, 1, 4, 3, 3]
     tree_two = BinaryTree(two)
     print("two-------------")
     print(tree_two)
