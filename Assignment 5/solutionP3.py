@@ -307,69 +307,68 @@ def test_same_tree():
     leaf_node = tree.root.left.left
     tree.delete_node(leaf_node)
     """
+
     print(tree)
 
     nodes = tree.get_nodes()
     print("delete")
-    tree.delete_node(tree.root)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-    #print("root", tree.root.inspect())
-    #print("left", tree.root.left.inspect())
-    #print("left.left", tree.root.left.left.inspect())
-    #print("left.left.left", tree.root.left.left.left.inspect())
-    #print("left.left.left.left", tree.root.left.left.left.left.inspect())
-    #print("left.left.right", tree.root.left.left.right.inspect())
-    #print("left.left.right.left", tree.root.left.left.right.left.inspect())
 
     """
+    tree.delete_node(tree.root)
+
+    print("-------------------------------------------------")
+    print("root", tree.root.inspect())
+    tree.delete_node(tree.root)
+    print(tree)
+
+    print("-------------------------------------------------")
+    print("root", tree.root.inspect())
+    tree.delete_node(tree.root)
+    print(tree)
+
+    print("-------------------------------------------------")
+    print("root", tree.root.inspect())
+    tree.delete_node(tree.root)
+    print(tree)
+
+    print("-------------------------------------------------")
+    print("root", tree.root.inspect())
+    tree.delete_node(tree.root)
+    print(tree)
+
+    print("-------------------------------------------------")
+    print("root", tree.root.inspect())
+    tree.delete_node(tree.root)
+    print(tree)
+
+    print("-------------------------------------------------")
+    print("root", tree.root.inspect())
+    tree.delete_node(tree.root)
+    print(tree)
+
+    print("-------------------------------------------------")
+    print("root", tree.root.inspect())
+    tree.delete_node(tree.root)
+    print(tree)
+
+    print("-------------------------------------------------")
+    print("root", tree.root.inspect())
+    tree.delete_node(tree.root)
+    print(tree)
+
+    print("-------------------------------------------------")
+    print("root", tree.root.inspect())
+    tree.delete_node(tree.root)
+    print(tree)
+    """
+
     while not tree.root.is_leaf():
-        tree.delete_node(tree.root)
+        print("-----------------------------------------")
         print("root", tree.root)
-    """
+        tree.delete_node(tree.root)
+        print(tree)
+        print("root", tree.root)
+
     """
     for node in nodes:
         print("val", node)
