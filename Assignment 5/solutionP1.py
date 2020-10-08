@@ -1,14 +1,3 @@
-"""
-Implement the followings in Python: (6 points)
-
-Queue implementation using a linked list, enqueue () and dequeue () methods.
-Stack implementation using a linked list, push () and pop () methods.
-Note: create a node, stack, and queue classes.
-
-Describe some of the application scenarios with concrete examples in which it would be suitable to use 1) the stack and 2) the queue data structures.
-
-"""
-
 
 class Queue():
     # First in first out
@@ -172,9 +161,3 @@ def test_stack():
 if __name__ == "__main__":
     test_queue()
     test_stack()
-
-"""
-The stack and the queue with linked list is both very efficient solutions for specific applications. 
-In order to take advantage of the features with linked lists and keep the needed operations at O(1) the list was implemented 
-
-"""

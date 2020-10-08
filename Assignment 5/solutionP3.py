@@ -1,29 +1,4 @@
-"""
-Binary trees tree
 
-Similar to linked list
-Nodes below a node is children
-
-binary tree has only 2 children
-Child node to the right must contain a int larger than it's parent
-
-Only one node that has no arrows pointing to it. This is the root node
-
-nodes with no children is called leaf nodes
-
-level 1 is where root is.
-
-Full binary tree has all leafs on same level
-Complete is same but the not always the last to the right
-        avg
-Space O(n)
-Access O(log n )
-Search O(log n )
-Insertion O(log n)
-Deletion O(log n)
-
-worst for all these is normally O(n)
-"""
 import random
 
 
@@ -112,7 +87,6 @@ class BinarySearchTree(Tree):
         self.get_values(self.root, values)
 
         # set mid value as root to balance the tree
-
         mid = len(values)//2
         mid_val = sorted(values).pop(mid)
 
@@ -200,7 +174,6 @@ class BinarySearchTree(Tree):
                 parent.left = None
             elif parent.right == node:
                 parent.right = None
-            # Correct
 
     def get_values(self, node, values):
         if node != None:
@@ -268,22 +241,32 @@ class BinarySearchTree(Tree):
 
 
 def test_random_tree():
-
-    one = random.sample(range(1, 15), 10)
+    # Create a binary tree
+    one = random.sample(range(1, 100), 90)
     tree_one = BinaryTree(one)
     print("one-------------")
     print(tree_one)
 
-    two = random.sample(range(1, 15), 10)
+    # Create another binary tree
+    two = random.sample(range(1, 100), 90)
     tree_two = BinaryTree(two)
     print("two-------------")
     print(tree_two)
 
+    # get top value
     print("binary search tree--------")
-
     tree = BinarySearchTree(tree_one.top(), tree_two.top())
-
     print(tree)
+
+    # delete every node fro mthe tree and print the tree on each step
+    print("delete")
+
+    while not tree.root.is_leaf():
+        print("-----------------------------------------")
+        print("root", tree.root)
+        tree.delete_node(tree.root)
+        print(tree)
+        print("root", tree.root)
 
 
 def test_same_tree():
@@ -300,67 +283,9 @@ def test_same_tree():
     print("binary search tree--------")
 
     tree = BinarySearchTree(tree_one.top(), tree_two.top())
-    # print(tree)
+    print(tree)
 
-    """
     print("delete")
-    leaf_node = tree.root.left.left
-    tree.delete_node(leaf_node)
-    """
-
-    print(tree)
-
-    nodes = tree.get_nodes()
-    print("delete")
-
-    """
-    tree.delete_node(tree.root)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-
-    print("-------------------------------------------------")
-    print("root", tree.root.inspect())
-    tree.delete_node(tree.root)
-    print(tree)
-    """
 
     while not tree.root.is_leaf():
         print("-----------------------------------------")
@@ -369,13 +294,11 @@ def test_same_tree():
         print(tree)
         print("root", tree.root)
 
-    """
-    for node in nodes:
-        print("val", node)
-        if node.parent != None:
-            print("parent", node.parent)
 
-    """
+# Function that takes two trees as input, merge them and returns a binary search tree
+def merge_to_binary_search_tree(tree_one, tree_two):
+    return BinarySearchTree(tree_one, tree_two)
 
 
-test_same_tree()
+test_random_tree()
+# test_same_tree()
