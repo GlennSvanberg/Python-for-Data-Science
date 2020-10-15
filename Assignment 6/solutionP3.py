@@ -3,22 +3,19 @@ class HashTable():
         self.arr = [None] * 7
 
     def insert(self, value):
-        if type(value) == list:
-            for val in value:
-                self.insert(val)
-        else:
-            hashed_value = value % len(self.arr)
 
-            if self.arr[hashed_value] == None:
-                self.arr[hashed_value] = Node(value)
-            else:
-                node = self.arr[hashed_value]
-                while node.child != None:
-                    node = node.child
-                node.child = Node(value)
+        hashed_value = hash(value) % len(self.arr)
+
+        if self.arr[hashed_value] == None:
+            self.arr[hashed_value] = Node(value)
+        else:
+            node = self.arr[hashed_value]
+            while node.child != None:
+                node = node.child
+            node.child = Node(value)
 
     def search(self, value):
-        node = self.arr[value % len(self.arr)]
+        node = self.arr[hash(value) % len(self.arr)]
         while node.value != value and node != None:
             node = node.child
 
@@ -63,10 +60,24 @@ def test1():
 def test2():
     print("Insert list")
     ht = HashTable()
-    l = [700, 21, 50, 85, 92, 101, 22, 23, 24, 25, 26, 28, 29, 30, 76]
-    ht.insert(l)
+    values = [700, 21, 50, 85, 92, 101, 22, 23, 24, 25, 26, 28, 29, 30, 76]
+    for val in values:
+        ht.insert(val)
     print(ht)
+
+
+def test3():
+    print("Insert other data types")
+    ht = HashTable()
+    values = ["test", "potato", "not potato", ("123", "321"), 1.45]
+    for val in values:
+        ht.insert(val)
+    print(ht)
+    print(ht.search(1.45))
+    print(ht.search("potato"))
+    print(ht.search(("123", "321")))
 
 
 test1()
 test2()
+test3()
