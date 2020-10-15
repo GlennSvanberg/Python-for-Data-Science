@@ -4,17 +4,7 @@ import time
 
 
 def words_letter_position(words, char, pos):
-    """
-    Matches words to certain positions in a word and returns them as a list
 
-    Args:
-    words: list of words
-    char: one char that will be matched to a certain position in the word
-    pos: int representing the position in the word the char should match to.
-
-    Returns:
-    list of words
-    """
     matches = []
     for word in words:
         try:
@@ -29,18 +19,7 @@ def words_letter_position(words, char, pos):
 
 
 def init_dictionary(words):
-    """
-    Takes a list of words and returns them as a nested dictionary.
-    The outer dictionary stores the chars as keys.
-    The value is another dictionary with positions of the chars in the words as keys.
-    The values of the inner dictionary is a list of words matching the outer keys.
 
-    Args:
-    words: list of words
-
-    Returns:
-    dictionary of chars with dictionary of positions with words as values
-    """
     char_dict = {}
     for word in words:
         for char_index, char in enumerate(word):
@@ -56,17 +35,7 @@ def init_dictionary(words):
 
 
 def dict_word_letter_pos(char_dict, char, pos):
-    """
-    Finds a char in a given position from a dictionary given these as elements
 
-    Args:
-    char_dict: Nested dictionary with all the words sorted under chars and positions
-    char: the that is to match the given position
-    pos: the position the char is to be found at
-
-    Returns:
-    list of words matching the given args
-    """
     try:
         return char_dict[pos][char]
     except KeyError:

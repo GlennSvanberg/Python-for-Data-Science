@@ -1,10 +1,5 @@
 def get_words():
-    """
-    Reads a file, 'words.txt' and returns a list of all the lines in that file stipped and lowercased.
 
-    Returns:
-    list of words
-    """
     word_list = []
     f = open("words.txt", "r")
     for row in f:
@@ -14,15 +9,7 @@ def get_words():
 
 
 def map_anagrams(words):
-    """
-    Takes a list of words and puts all the words in a dictionary sorted by anagrams. 
 
-    Args:
-    words: list of words
-
-    Returns: 
-    dictionary of anagrams, sorted anagram as key and lists of anagrams as values
-    """
     word_dict = {}
     for word in words:
         sorted_word = "".join(sorted(word))
@@ -37,16 +24,7 @@ def map_anagrams(words):
 
 
 def sort_by_list_length(words):
-    """
-    Iterates through a list of words and put all the words in a dictionary, one dictionary for each anagram. 
-    Keyname in the dictionary is the words in a sorted order and values is all the anagrams matching the sorted word
 
-    Args:
-    words: a dictionary containing words grouped together as lists of anagrams.
-
-    Returns:
-    Dictionary containing lists of anagrams grouped together based on list length. Keyname is the length of the lists. 
-    """
     anagrams = {}
     for key in words:
         if len(words[key]) > 1:
@@ -58,15 +36,7 @@ def sort_by_list_length(words):
 
 
 def anagram_key_list(anagrams):
-    """
-    create a list with the sorted keys of the anagrams dict
 
-    Args:
-    anagrams: dictionary containing lists of words
-
-    Returns:
-    List of keys from the dictionary sorted biggest to smallest
-    """
     key_list = []
     for key in anagrams:
         key_list.append(key)
@@ -75,14 +45,7 @@ def anagram_key_list(anagrams):
 
 
 def print_anagrams(anagrams, key_list, word_length=0):
-    """
-    Prints anagrams as lists in descending order,
-    if word_length is other than 0 print only the specified word length
 
-    Args:
-    anagrams: dictionary of lists containing anagrams.
-    key_list: list containing the keys to the dictionary of anagrams
-    """
     for key in key_list:
         for anagram in anagrams[key]:
             if word_length == 0:
